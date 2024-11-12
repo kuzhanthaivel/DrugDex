@@ -28,5 +28,5 @@ const App = () => {
 };
 
 // Register the main component using the name from app.json
-AppRegistry.registerComponent('AttendanceApp', () => App);
+AppRegistry.registerComponent('DrugDex', () => App);
 export default App;
