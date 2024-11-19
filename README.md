@@ -1,19 +1,6 @@
 
-# Attendance App
+# DrugDex App
 
-## Overview
-
-The Attendance App is a React Native application designed to manage and track attendance efficiently. It allows users to mark attendance, generate reports, and view daily and overall attendance analysis, providing valuable insights through visual progress bars and detailed lists of absentees and presents.
-
-## Features
-
-- **Mark Attendance:** Easily mark attendance for students or employees.
-- **Generate Reports:** Quickly generate attendance reports for any given period.
-- **View Today's Analysis:** View today's attendance counts, including presents, absentees, and a progress bar for visual representation.
-- **View Yesterday's Analysis:** View yesterday's attendance data, including presents, absentees, and a progress bar.
-- **Overall Analysis:** Access a comprehensive analysis of overall attendance.
-
-## Getting Started
 
 ### Prerequisites
 
@@ -29,7 +16,7 @@ The Attendance App is a React Native application designed to manage and track at
 1. **Clone the repository:**
 
    ```bash
-   git clone https://github.com/kuzhanthaivel/attendance-app
+   git clone https://github.com/kuzhanthaivel/DrugDex
    ``` 
 
 2. **Navigate to the project directory:**
