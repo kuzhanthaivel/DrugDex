@@ -9,7 +9,7 @@
     "userInterfaceStyle": "light",
     "splash": {
       "image": "./assets/splash.png",
-      "resizeMode": "contain",
+      "resizeMode": "cover",
       "backgroundColor": "#ffffff"
     },
     "assetBundlePatterns": [
@@ -21,7 +21,8 @@
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/favicon.png",
-        "backgroundColor": "#ffffff"
+        "backgroundColor": "#ffffff",
+        "resizeMode": "cover"
       },
       "package": "com.example.Drugdex"
     },

@@ -36,7 +36,8 @@
     "react-native-webview": "13.12.2",
     "tailwind-react-native-classnames": "^1.5.1",
     "typescript": "^5.3.3",
-    "@types/react": "~18.3.12"
+    "@types/react": "~18.3.12",
+    "react-native-web": "~0.19.13"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",

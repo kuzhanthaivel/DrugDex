@@ -1,10 +1,110 @@
-import { View, Text } from 'react-native'
-import React from 'react'
+import { View, Text, TouchableOpacity, ScrollView, Image, TextInput} from 'react-native'
+import React, { useState } from 'react';
+import { useNavigation } from '@react-navigation/native';
 
 export default function register() {
+  const navigation = useNavigation();
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [retypePassword, setRetypePassword] = useState('');
+
   return (
-    <View>
-      <Text>register</Text>
+    <View className="flex-1 px-10 pt-10 bg-gray-100">
+    {/* Header */}
+    <View className="flex-row items-center justify-center mt-10 mb-8">
+      <Image
+        source={require('../assets/icon.png')}
+        className=""
+      />
+      <Text className="ml-2 text-2xl font-bold ">DrugDex</Text>
     </View>
+
+    {/* Illustration */}
+    <View className="flex items-center mb-6">
+      <Image
+        source={require('../assets/coverImage2.png')} 
+        className=""
+        resizeMode="contain"
+      />
+    </View>
+
+    {/* Sign-Up Header */}
+    <Text className="mb-6 text-xl font-semibold text-gray-800">Sign Up</Text>
+
+    {/* Name Input */}
+    <View className="mb-4">
+      <TextInput
+        className="w-full h-12 px-4 bg-white border border-gray-300 rounded-lg"
+        placeholder="NAME"
+        value={name}
+        onChangeText={(text) => setName(text)}
+      />
+    </View>
+
+    {/* Email Input */}
+    <View className="mb-4">
+      <TextInput
+        className="w-full h-12 px-4 bg-white border border-gray-300 rounded-lg"
+        placeholder="EMAIL ID"
+        value={email}
+        keyboardType="email-address"
+        onChangeText={(text) => setEmail(text)}
+      />
+    </View>
+
+    {/* Password Input */}
+    <View className="mb-4">
+      <TextInput
+        className="w-full h-12 px-4 bg-white border border-gray-300 rounded-lg"
+        placeholder="PASSWORD"
+        secureTextEntry
+        value={password}
+        onChangeText={(text) => setPassword(text)}
+      />
+    </View>
+
+    {/* Retype Password Input */}
+    <View className="mb-6">
+      <TextInput
+        className="w-full h-12 px-4 bg-white border border-gray-300 rounded-lg"
+        placeholder="RETYPE PASSWORD"
+        secureTextEntry
+        value={retypePassword}
+        onChangeText={(text) => setRetypePassword(text)}
+      />
+    </View>
+
+    {/* Create Account Button */}
+    <TouchableOpacity
+  className={`w-full h-12 rounded-lg items-center justify-center ${
+    name && email && password && retypePassword && password === retypePassword
+      ? 'bg-blue-600'
+      : 'bg-gray-400'
+  }`}
+  disabled={
+    !name || !email || !password || !retypePassword || password !== retypePassword
+  }
+  onPress={() => {
+    alert('Account Created!');
+    navigation.navigate('Login');
+  }}
+>
+  <Text className="text-lg font-bold text-white">Create Account</Text>
+    </TouchableOpacity>
+
+       {/* Separator */}
+       <Text className="my-6 text-center text-gray-500">Or</Text>
+       
+       
+    {/* Sign-In Link */}
+    <TouchableOpacity onPress={() => navigation.navigate('Login')} className="">
+  <Text className="text-base text-center">
+    Already have an account?{' '}
+    <Text className="font-semibold text-blue-600">Sign In</Text>
+  </Text>
+</TouchableOpacity>
+
+  </View>
   )
 }
