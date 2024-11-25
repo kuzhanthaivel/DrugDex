@@ -22,7 +22,7 @@
 2. **Navigate to the project directory:**
 
    ```bash
-   cd AttendanceApp
+   cd DrugDex
    ```
 
 3. **Install dependencies:**

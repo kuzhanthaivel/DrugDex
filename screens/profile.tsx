@@ -2,8 +2,12 @@ import { View, Text, TouchableOpacity, ScrollView, Image, TextInput} from 'react
 import React, { useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 
-export default function Bookmarks() {
+export default function Profile() {
   const navigation = useNavigation();
+  const [username, setUsername] = useState('Kuzhanthaivelu');
+  const [password, setPassword] = useState('');
+  const dummyPassword = '••••••';
+  const [email, setEmail] = useState('kuzhanthaivel272@gmail.com');
   
   return (
     <View className="flex-1 bg-gray-100 pt-14">
@@ -35,10 +39,10 @@ export default function Bookmarks() {
         <View className="flex-row items-center justify-between mb-4">
           <View className="gap-1">
             <Text className="text-gray-600">Your Name</Text>
-            <Text className="font-medium text-black">Kuzhanthaivelu</Text>
+            <Text className="font-medium text-black">{username}</Text>
           </View>
           <TouchableOpacity >
-            <Text className="text-blue-500">Edit</Text>
+            <Text className="text-[#2196F3]">Edit</Text>
           </TouchableOpacity>
         </View>
 
@@ -47,7 +51,7 @@ export default function Bookmarks() {
           <View className="gap-1">
             <Text className="text-gray-600">Email</Text>
             <Text className="font-medium text-black">
-              kuzhanthaivel272@gmail.com
+              {email}
             </Text>
           </View>
 
@@ -57,10 +61,10 @@ export default function Bookmarks() {
         <View className="flex-row items-center justify-between">
           <View className="gap-1">
             <Text className="text-gray-600">Password</Text>
-            <Text className="font-medium text-black">••••••</Text>
+            <Text className="font-medium text-black">{dummyPassword}</Text>
           </View>
           <TouchableOpacity>
-            <Text className="text-blue-500">Edit</Text>
+            <Text className="text-[#2196F3]">Edit</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -103,7 +107,7 @@ export default function Bookmarks() {
             source={require('../assets/profileBlue.png')} 
             className="w-6 h-6"
           />
-          <Text className="text-sm text-center text-blue-500">Profile</Text>
+          <Text className="text-sm text-center text-[#2196F3]">Profile</Text>
         </TouchableOpacity>
       </View>
     </View>

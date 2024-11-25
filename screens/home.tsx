@@ -1,23 +1,45 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, Text, Image, TextInput, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+
 const HomeScreen = () => {
   const navigation = useNavigation();
+  const [drugName, setDrugName] = useState('');
+
+  const handleSearch = () => {
+    if (drugName.trim().length > 0) {
+      navigation.navigate('Result', { drugName });
+    }
+  };
+
   return (
     <View className="flex-1 bg-gray-100 pt-14">
-
+      {/* Header */}
       <View className="flex-row items-center justify-center py-4">
-        <Image
-          source={require('../assets/icon.png')} 
-          className=""
-        />
+        <Image source={require('../assets/icon.png')} className="" />
         <Text className="ml-2 text-2xl font-bold text-black">DrugDex</Text>
+      </View>
+
+      {/* Search Bar */}
+      <View className="flex-row items-center justify-center h-16 mx-6 mt-20 bg-white rounded-full shadow-md">
+        <TouchableOpacity className="px-4">
+          <Image source={require('../assets/camera.png')} className="" />
+        </TouchableOpacity>
+        <TextInput
+          placeholder="Search for drugs..."
+          className="flex-1 px-4 py-2 text-gray-700"
+          value={drugName} 
+          onChangeText={setDrugName} 
+        />
+        <TouchableOpacity onPress={handleSearch} className="px-4">
+          <Image source={require('../assets/send.png')} />
+        </TouchableOpacity>
       </View>
 
       {/* Illustration */}
       <View className="items-center justify-center pt-14">
         <Image
-          source={require('../assets/coverImage3.png')} 
+          source={require('../assets/coverImage3.png')}
           className="h-56 w-72"
           resizeMode="contain"
         />
@@ -28,47 +50,33 @@ const HomeScreen = () => {
         Search to learn about your drug!!
       </Text>
 
-      {/* Search Bar */}
-      <View className="flex-row items-center justify-center h-16 mx-6 bg-white rounded-full shadow-md">
-        <TouchableOpacity className="px-4">
-          <Image
-            source={require('../assets/camera.png')} 
-            className=""
-          />
-        </TouchableOpacity>
-        <TextInput
-          placeholder="Search for .."
-          className="flex-1 px-4 py-2 text-gray-700"
-        />
-        <TouchableOpacity onPress={() => navigation.navigate('Result')} className="px-4">
-          <Image
-            source={require('../assets/send.png')} 
-          />
-        </TouchableOpacity>
-      </View>
-
       {/* Footer Navigation */}
       <View className="absolute bottom-0 flex-row items-center justify-around w-full h-24 py-2 bg-gray-100">
-
-        <TouchableOpacity onPress={() => navigation.navigate('Bookmarks')} className="items-center gap-2">
+        <TouchableOpacity
+          onPress={() => navigation.navigate('Bookmarks')}
+          className="items-center gap-2"
+        >
           <Image
-            source={require('../assets/bookmarkBlack.png')} 
+            source={require('../assets/bookmarkBlack.png')}
             className="w-6 h-6"
           />
           <Text className="text-sm text-center text-gray-600">Bookmarks</Text>
         </TouchableOpacity>
-        
+
         <TouchableOpacity className="items-center gap-2">
           <Image
-            source={require('../assets/homeBlue.png')} 
+            source={require('../assets/homeBlue.png')}
             className="w-6 h-6"
           />
-          <Text className="text-sm text-center text-blue-500">Home</Text>
+          <Text className="text-sm text-center text-[#2196F3]">Home</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity onPress={() => navigation.navigate('Profile')} className="items-center gap-2">
+        <TouchableOpacity
+          onPress={() => navigation.navigate('Profile')}
+          className="items-center gap-2"
+        >
           <Image
-            source={require('../assets/profileBlack.png')} 
+            source={require('../assets/profileBlack.png')}
             className="w-6 h-6"
           />
           <Text className="text-sm text-center text-gray-600">Profile</Text>

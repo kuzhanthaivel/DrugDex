@@ -1,17 +1,25 @@
 {
   "cli": {
-    "version": ">= 5.4.0"
+    "version": ">= 13.3.0",
+    "appVersionSource": "remote"
   },
   "build": {
     "development": {
       "developmentClient": true,
       "distribution": "internal"
     },
-    "preview": {
-      "distribution": "internal"
-    },
-    "production": {}
-  }, 
+<<<<<<< Tabnine <<<<<<<
+    "preview": {  // Correctly spelled "preview"//-
+      "distribution": "internal"//-
+    },//-
+    "preview": {//+
+        "distribution": "internal"//+
+    }//+
+>>>>>>> Tabnine >>>>>>>// {"conversationId":"dfe2b350-97aa-4555-8750-447d8f462c8d","source":"instruct"}
+    "production": {
+      "autoIncrement": true
+    }
+  },
   "submit": {
     "production": {}
   }
