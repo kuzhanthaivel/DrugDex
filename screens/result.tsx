@@ -1,62 +1,156 @@
 import { View, Text, TouchableOpacity, ScrollView, Image } from 'react-native';
-import React, { useState } from 'react';
-import { useNavigation } from '@react-navigation/native';
+import React, { useState, useEffect } from 'react';
+import { useNavigation, useRoute } from '@react-navigation/native';
+import axios from 'axios';
 
 export default function Result() {
   const navigation = useNavigation();
-  const [descriptionIsExpanded, setDescriptionIsExpanded] = useState(false);
+  const route = useRoute();
+  const { drugName, username } = route.params;
+  const [drug, setDrug] = useState("");
+  const [description, setDescription] = useState("");
+  const [uses, setUses] = useState([]);
+  const [indications, setIndications] = useState([]);
+  const [sideEffects, setSideEffects] = useState([]);
+  const [warnings, setWarnings] = useState([]);
+  const [liked, setLiked] = useState(false);
+  const [loading, setLoading] = useState(true); 
+  const [error, setError] = useState(null); 
+  const [error1, setError1] = useState(null); 
+  
+
+//  const [descriptionIsExpanded, setDescriptionIsExpanded] = useState(false); 
   const [usesIsExpanded, setUsesIsExpanded] = useState(false);
   const [indicationsIsExpanded, setIndicationsIsExpanded] = useState(false);
   const [sideEffectsIsExpanded, setSideEffectsIsExpanded] = useState(false);
   const [warningsIsExpanded, setWarningsIsExpanded] = useState(false);
-  const [liked, setLiked] = useState(false);
 
-  const [drugName, setDrugName] = useState('Dolo 650');
-  const [description, setDescription] = useState("Dolo 650 is a commonly used medication that provides relief from pain and fever. It contains the active ingredient paracetamol, also known as acetaminophen. Paracetamol is widely used for its analgesic (pain-relieving) and antipyretic (fever-reducing) properties. It is available in tablet form and can be easily purchased over the counter. Research shows DOLO 650 was one of the highest sought-after medicines in India during Covid.");
-  
-  const [uses, setUses] = useState([
-    'Headaches',
-    'Toothaches',
-    'Menstrual cramps',
-    'Muscle aches',
-    'Cold-related symptoms like fever and body aches',
-  ]);
-  
-  const [indications, setIndications] = useState([
-    'Headaches',
-    'Fever',
-    'Pain relief',
-    'Body pain',
-  ]);
-  
-  const [sideEffects, setSideEffects] = useState([
-    'Nausea',
-    'Dizziness',
-    'Liver/kidney issues',
-    'Allergic reactions',
-  ]);
-  
-  const [warnings, setWarnings] = useState([
-    'Avoid alcohol',
-    'Stick to recommended dose',
-    'Consult a doctor if pregnant or on other meds',
-    'Avoid long-term use',
-  ]);
-
-  const toggleLike = () => {
-    setLiked(!liked);
-  };
 
   const toggleExpand = (section) => {
-    if (section === 'description') setDescriptionIsExpanded(!descriptionIsExpanded);
+//  if (section === 'description') setDescriptionIsExpanded(!descriptionIsExpanded);
     if (section === 'uses') setUsesIsExpanded(!usesIsExpanded);
     if (section === 'indications') setIndicationsIsExpanded(!indicationsIsExpanded);
     if (section === 'sideEffects') setSideEffectsIsExpanded(!sideEffectsIsExpanded);
     if (section === 'warnings') setWarningsIsExpanded(!warningsIsExpanded);
   };
 
-  return (
-    <View className="flex-1 bg-gray-100 pt-14">
+  // Fetch drug data
+  useEffect(() => {
+    const fetchDrugData = async () => {
+      try {
+        setLoading(true);
+        const response = await axios.get('http://192.168.140.82:5001/search-drug', {
+          params: { drugName },
+        });
+
+        const drug = response.data.drug;
+        setDrug(drug.drugName);
+        setDescription(drug.description);
+        setUses(drug.uses);
+        setIndications(drug.indications);
+        setSideEffects(drug.sideEffects);
+        setWarnings(drug.warnings);
+      } catch (err) {
+        console.error('Error fetching drug data:', err);
+        setError('Failed to load drug data.');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchDrugData();
+  }, [drugName]);
+  
+  useEffect(() => {
+    const checkBookmark = async () => {
+      try {
+        const response = await axios.post('http://192.168.140.82:5001/check-bookmark', {
+          username: username,
+          drugName: drugName,
+        });
+        setLiked(response.data.isBookmarked);
+      } catch (err) {
+        console.error('Error checking bookmark:', err);
+        setError1('Failed to check bookmark.');
+      }
+    };
+  
+    checkBookmark();
+  }, [username, drugName]);
+  
+
+
+const toggleLike = async () => {
+  setLiked(!liked);
+  console.log({ username, drug });
+
+  try {
+      const endpoint = liked ? 'remove-bookmark' : 'add-bookmark';
+      const response = await axios.post(`http://192.168.140.82:5001/${endpoint}`, {
+          username :username,
+          drugName : drug,
+      });
+
+      if (response.data.isBookmarked !== undefined) {
+          setLiked(response.data.isBookmarked);
+      }
+  } catch (err) {
+      console.error('Error toggling bookmark:', err);
+  }
+};
+
+
+
+  if (loading) {
+    return (
+      <View className="flex-1 pt-14" >
+          <View className="flex-row items-center px-5 mx-3 my-4 bg-white rounded-lg shadow-md h-14">
+        <TouchableOpacity
+          onPress={() =>
+            navigation.canGoBack()
+              ? navigation.goBack()
+              : console.log('No screen to go back to')
+          }
+          className="pr-4"
+        >
+          <Image
+            source={require('../assets/arrow_back.png')}
+          />
+        </TouchableOpacity>
+
+        {/* Title */}
+        <View className="flex-1">
+          <Text className="text-xl font-bold text-black">{drugName}</Text>
+        </View>
+
+        {/* Like and Share Buttons */}
+        <View className="flex-row items-center">
+          {/* Like Button */}
+          <TouchableOpacity className="pl-4" onPress={toggleLike}>
+            <Image
+              source={liked ? require('../assets/likeRed.png') : require('../assets/likeBlack.png')}
+              className="h-6 w-7"
+            />
+          </TouchableOpacity>
+
+          {/* Share Button */}
+          <TouchableOpacity className="pl-4">
+            <Image
+              source={require('../assets/share.png')}
+            />
+          </TouchableOpacity>
+        </View>
+      </View>
+      <View className="items-center justify-center flex-1 bg-gray-100">
+        <Text className="text-lg text-gray-700">Loading...</Text>
+      </View> </View>
+
+    );
+  }
+
+  if (error) {
+    return (
+      <View className="flex-1 pt-14" >
       <View className="flex-row items-center px-5 mx-3 my-4 bg-white rounded-lg shadow-md h-14">
         <TouchableOpacity
           onPress={() =>
@@ -94,28 +188,79 @@ export default function Result() {
           </TouchableOpacity>
         </View>
       </View>
+        
+        <View className="items-center justify-center flex-1 bg-gray-100">
+        <Text className="text-lg text-red-600">{error}</Text>
+      </View> 
+      </View>
+
+    );
+  }
+
+  return (
+    <View className="flex-1 bg-gray-100 pt-14">
+      <View className="flex-row items-center px-5 mx-3 my-4 bg-white rounded-lg shadow-md h-14">
+        <TouchableOpacity
+          onPress={() =>
+            navigation.canGoBack()
+              ? navigation.goBack()
+              : console.log('No screen to go back to')
+          }
+          className="pr-4"
+        >
+          <Image
+            source={require('../assets/arrow_back.png')}
+          />
+        </TouchableOpacity>
+
+        {/* Title */}
+        <View className="flex-1">
+          <Text className="text-xl font-bold text-black">{drug}</Text>
+        </View>
+
+        {/* Like and Share Buttons */}
+        <View className="flex-row items-center">
+          {/* Like Button */}
+          <TouchableOpacity className="pl-4" onPress={toggleLike}>
+            <Image
+              source={liked ? require('../assets/likeRed.png') : require('../assets/likeBlack.png')}
+              className="h-6 w-7"
+            />
+          </TouchableOpacity>
+
+          {/* Share Button */}
+          <TouchableOpacity className="pl-4">
+            <Image
+              source={require('../assets/share.png')}
+            />
+          </TouchableOpacity>
+        </View>
+      </View>
 
       <ScrollView showsVerticalScrollIndicator={false} showsHorizontalScrollIndicator={false}>
-        <View className="flex items-center justify-center p-6 mx-4 mb-4 bg-white rounded-lg shadow-md">
-          <Image source={require('../assets/demo.png')} />
-        </View>
+
         
         {/* Description Section */}
         <View className="p-6 mx-4 mb-4 bg-white rounded-lg shadow-md">
           <View className="flex-row items-center justify-between">
             <Text className="text-lg font-bold">Description</Text>
+            {/* 
             <TouchableOpacity onPress={() => toggleExpand('description')}>
               <Image
                 source={descriptionIsExpanded ? require('../assets/uparrow.png') : require('../assets/downArrow.png')}
               />
-            </TouchableOpacity>
+            </TouchableOpacity>*/}
           </View>
-          {/* Expanded Content */}
-          {descriptionIsExpanded && (
+          {/*           {descriptionIsExpanded && (
             <View className="mt-4">
               <Text className="text-sm text-gray-700">{description}</Text>
             </View>
-          )}
+          )} */}
+
+            <View className="mt-4">
+              <Text className="text-sm text-gray-700">{description}</Text>
+            </View>
+
         </View>
 
         {/* Uses Section */}

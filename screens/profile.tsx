@@ -1,13 +1,102 @@
 import { View, Text, TouchableOpacity, ScrollView, Image, TextInput} from 'react-native'
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigation } from '@react-navigation/native';
-
-export default function Profile() {
+import axios from 'axios';
+export default function Profile({ route}) {
   const navigation = useNavigation();
-  const [username, setUsername] = useState('Kuzhanthaivelu');
   const [password, setPassword] = useState('');
   const dummyPassword = '••••••';
-  const [email, setEmail] = useState('kuzhanthaivel272@gmail.com');
+  const [email, setEmail] = useState('');
+  const { username } = route.params;
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        setLoading(true);
+        const response = await axios.get('http://192.168.140.82:5001/get-user', {
+          params: { username },
+        });
+        const user = response.data.data;
+
+        setEmail(user.email);
+        setPassword(user.password);
+      } catch (err) {
+        console.error('Error fetching user data:', err);
+        setError('Failed to load user details.');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchUserData();
+  }, [username]);
+
+  if (loading) {
+    return (
+      <View className="flex-1 bg-gray-100 pt-14">
+              <View className="flex-row items-center justify-center py-4">
+        <Image
+          source={require('../assets/icon.png')} 
+          className=""
+        />
+        <Text className="ml-2 text-2xl font-bold text-black">DrugDex</Text>
+      </View>
+
+  {/* Profile Section */}
+  <View className="items-center mt-8">
+        <Text className="mb-4 text-3xl font-medium text-black">My Profile</Text>
+        <View className="items-center justify-center rounded-full h-28 w-28">
+          <Image
+            source={require('../assets/profile.png')} // Replace with a user icon
+            className="h-28 w-28"
+            resizeMode="contain"
+          />
+        </View>
+      </View>
+      <View className="items-center justify-center flex-1 bg-gray-100">
+        <Text className="text-lg text-gray-700">Loading...</Text>
+      </View>
+      </View>
+
+    );
+  }
+
+  if (error) {
+    return (
+      <View className="flex-1 bg-gray-100 pt-14" >
+              <View className="flex-row items-center justify-center py-4">
+        <Image
+          source={require('../assets/icon.png')} 
+          className=""
+        />
+        <Text className="ml-2 text-2xl font-bold text-black">DrugDex</Text>
+      </View>
+
+  {/* Profile Section */}
+  <View className="items-center mt-8">
+        <Text className="mb-4 text-3xl font-medium text-black">My Profile</Text>
+        <View className="items-center justify-center rounded-full h-28 w-28">
+          <Image
+            source={require('../assets/profile.png')} // Replace with a user icon
+            className="h-28 w-28"
+            resizeMode="contain"
+          />
+        </View>
+      </View>
+        
+      <View className="items-center justify-center flex-1 bg-gray-100">
+        <Text className="text-lg text-red-600">{error}</Text>
+      </View>
+      </View>
+
+    );
+  }
+
+  
+  
   
   return (
     <View className="flex-1 bg-gray-100 pt-14">
@@ -41,7 +130,7 @@ export default function Profile() {
             <Text className="text-gray-600">Your Name</Text>
             <Text className="font-medium text-black">{username}</Text>
           </View>
-          <TouchableOpacity >
+          <TouchableOpacity onPress={() => navigation.navigate('EditUsername', { username })}>
             <Text className="text-[#2196F3]">Edit</Text>
           </TouchableOpacity>
         </View>
@@ -63,7 +152,7 @@ export default function Profile() {
             <Text className="text-gray-600">Password</Text>
             <Text className="font-medium text-black">{dummyPassword}</Text>
           </View>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={() => navigation.navigate('EditPassword', { username, password })}>
             <Text className="text-[#2196F3]">Edit</Text>
           </TouchableOpacity>
         </View>
@@ -83,7 +172,7 @@ export default function Profile() {
       <View className="absolute bottom-0 flex-row items-center justify-around w-full h-24 py-2 bg-gray-200">
 
         <TouchableOpacity
-        onPress={() => navigation.navigate('Bookmarks')}
+        onPress={() => navigation.navigate('Bookmarks', { username })}
          className="items-center gap-2">
           <Image
             source={require('../assets/bookmarkBlack.png')} 
@@ -93,7 +182,7 @@ export default function Profile() {
         </TouchableOpacity>
         
         <TouchableOpacity 
-        onPress={() => navigation.navigate('Home')}
+        onPress={() => navigation.navigate('Home', { username })}
         className="items-center gap-2">
           <Image
             source={require('../assets/homeBlack.png')} 

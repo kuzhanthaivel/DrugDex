@@ -1,13 +1,42 @@
-import { View, Text, TouchableOpacity, ScrollView, Image, TextInput} from 'react-native'
+import { View, Text, TouchableOpacity, ScrollView, Image, TextInput, Alert} from 'react-native'
 import React, { useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
-
+import axios from 'axios';
+  
 export default function register() {
   const navigation = useNavigation();
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [retypePassword, setRetypePassword] = useState('');
+
+  
+  const handleRegister = async () => {
+    if (password !== retypePassword) {
+      Alert.alert('Passwords do not match!');
+      return;
+    }
+  
+    try {
+      const response = await axios.post('http://192.168.140.82:5001/register-user', {
+        username: name,
+        email,
+        password
+      });
+  
+      if (response.status === 201) {
+        Alert.alert('Success', 'Account created successfully');
+        navigation.navigate('Login');
+      }
+    } catch (error) {
+      if (error.response) {
+        Alert.alert('Error', error.response.data.message);
+      } else {
+        Alert.alert('Error', 'An error occurred, please try again later.');
+      }
+    }
+  };
+  
 
   return (
     <ScrollView className="flex-1 px-10 pt-10 bg-gray-100">
@@ -85,10 +114,9 @@ export default function register() {
   disabled={
     !name || !email || !password || !retypePassword || password !== retypePassword
   }
-  onPress={() => {
-    alert('Account Created!');
-    navigation.navigate('Login');
-  }}
+ 
+    onPress={handleRegister} 
+  
 >
   <Text className="text-lg font-bold text-white">Create Account</Text>
     </TouchableOpacity>

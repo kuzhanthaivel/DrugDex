@@ -1,12 +1,34 @@
-import { View, Text, TouchableOpacity, ScrollView, Image, TextInput} from 'react-native'
+import { View, Text, TouchableOpacity, ScrollView, Image, TextInput, Alert} from 'react-native'
 import React, { useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
+import axios from 'axios';
 
 export default function login() {
   const navigation = useNavigation();
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  
+  
+  const handleLogin = async () => {
+    try {
+      const response = await axios.post('http://192.168.140.82:5001/login-user', {
+        username : username,
+        password,
+      });
+
+      if (response.status === 200) {
+        Alert.alert('Success', 'Login successful');
+        navigation.navigate('Home', { username }); // Navigate to the home screen
+      }
+    } catch (error) {
+      if (error.response) {
+        Alert.alert('Error', error.response.data.message);
+      } else {
+        Alert.alert('Error', 'Unable to connect to the server. Please try again.');
+      }
+    }
+  };
 
   return (
     <ScrollView className="flex-1 px-10 pt-10 bg-gray-100">
@@ -65,10 +87,7 @@ export default function login() {
         </TouchableOpacity>
       </View>
 
-      {/* Forgot Password */}
-      <TouchableOpacity className="mb-6">
-        <Text className="font-semibold text-right text-blue-600">Forget Password?</Text>
-      </TouchableOpacity>
+
 
       {/* Login Button */}
       <TouchableOpacity
@@ -76,10 +95,7 @@ export default function login() {
           username && password ? 'bg-blue-600' : 'bg-gray-400'
         }`}
         disabled={!username || !password}
-        onPress={() => {
-          alert('Logged in!');
-          navigation.navigate('Home');
-        }}
+        onPress={handleLogin}
       >
         <Text className="text-lg font-bold text-white">Login</Text>
       </TouchableOpacity>

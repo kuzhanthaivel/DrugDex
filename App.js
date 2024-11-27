@@ -8,6 +8,8 @@ import Register from './screens/register';
 import Result from './screens/result';
 import Profile from './screens/profile';
 import Bookmarks from './screens/bookmarks';
+import EditUsername from './screens/editUsername';
+import EditPassword from './screens/editPassword';
 
 
 const Stack = createStackNavigator();
@@ -15,13 +17,15 @@ const Stack = createStackNavigator();
 const App = () => {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Bookmarks" screenOptions={{ headerShown: false }}>
+      <Stack.Navigator initialRouteName="Login" screenOptions={{ headerShown: false }}>
       <Stack.Screen name="Home" component={Home} />
       <Stack.Screen name="Login" component={Login} />
       <Stack.Screen name="Register" component={Register} />
       <Stack.Screen name="Result" component={Result} />
       <Stack.Screen name="Profile" component={Profile} />
       <Stack.Screen name="Bookmarks" component={Bookmarks} />
+      <Stack.Screen name="EditUsername" component={EditUsername} />
+      <Stack.Screen name="EditPassword" component={EditPassword} />
       </Stack.Navigator>
     </NavigationContainer>
   );

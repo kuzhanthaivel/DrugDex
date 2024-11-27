@@ -2,16 +2,18 @@ import React, { useState } from 'react';
 import { View, Text, Image, TextInput, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
-const HomeScreen = () => {
+const HomeScreen = ({ route}) => {
   const navigation = useNavigation();
   const [drugName, setDrugName] = useState('');
+  
+  const { username } = route.params;
 
   const handleSearch = () => {
     if (drugName.trim().length > 0) {
-      navigation.navigate('Result', { drugName });
+      navigation.navigate('Result', { drugName, username });
     }
   };
-
+  
   return (
     <View className="flex-1 bg-gray-100 pt-14">
       {/* Header */}
@@ -46,6 +48,9 @@ const HomeScreen = () => {
       </View>
 
       {/* Subtitle */}
+      <Text className="pb-1 mb-4 text-xl font-semibold text-center text-gray-700">
+        Hi { username }!
+      </Text>
       <Text className="mb-4 text-xl font-semibold text-center text-gray-700 pb-14">
         Search to learn about your drug!!
       </Text>
@@ -53,7 +58,7 @@ const HomeScreen = () => {
       {/* Footer Navigation */}
       <View className="absolute bottom-0 flex-row items-center justify-around w-full h-24 py-2 bg-gray-100">
         <TouchableOpacity
-          onPress={() => navigation.navigate('Bookmarks')}
+          onPress={() => navigation.navigate('Bookmarks', { username })}
           className="items-center gap-2"
         >
           <Image
@@ -72,7 +77,7 @@ const HomeScreen = () => {
         </TouchableOpacity>
 
         <TouchableOpacity
-          onPress={() => navigation.navigate('Profile')}
+          onPress={() => navigation.navigate('Profile', { username })}
           className="items-center gap-2"
         >
           <Image
