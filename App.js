@@ -10,14 +10,43 @@ import Profile from './screens/profile';
 import Bookmarks from './screens/bookmarks';
 import EditUsername from './screens/editUsername';
 import EditPassword from './screens/editPassword';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useState, useEffect } from 'react';
 
 
 const Stack = createStackNavigator();
 
 const App = () => {
+
+
+  const [isLoggedIn, setIsLoggedIn] = useState(null);
+  const [username, setUsername] = useState('');
+
+  const checkLoginStatus = async () => {
+    try {
+      const loggedIn = await AsyncStorage.getItem('isLoggedIn');
+      const storedUsername = await AsyncStorage.getItem('username');
+      if (loggedIn === 'true' && storedUsername) {
+        setIsLoggedIn(true);
+        setUsername(storedUsername); // Save username in state
+      } else {
+        setIsLoggedIn(false);
+      }
+    } catch (error) {
+      console.error('Failed to fetch login status:', error);
+    }
+  };
+
+  useEffect(() => {
+    checkLoginStatus();
+  }, []);
+
+
+
+
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Login" screenOptions={{ headerShown: false }}>
+      <Stack.Navigator initialRouteName={isLoggedIn ? 'Home' : 'Login'} screenOptions={{ headerShown: false }}>
       <Stack.Screen name="Home" component={Home} />
       <Stack.Screen name="Login" component={Login} />
       <Stack.Screen name="Register" component={Register} />

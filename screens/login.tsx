@@ -2,6 +2,7 @@ import { View, Text, TouchableOpacity, ScrollView, Image, TextInput, Alert} from
 import React, { useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function login() {
   const navigation = useNavigation();
@@ -19,7 +20,9 @@ export default function login() {
 
       if (response.status === 200) {
         Alert.alert('Success', 'Login successful');
-        navigation.navigate('Home', { username }); // Navigate to the home screen
+        await AsyncStorage.setItem('username', username); 
+        await AsyncStorage.setItem('isLoggedIn', 'true');
+        navigation.navigate('Home', { username }); 
       }
     } catch (error) {
       if (error.response) {
