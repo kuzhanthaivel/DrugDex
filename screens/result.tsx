@@ -39,7 +39,7 @@ export default function Result() {
     const fetchDrugData = async () => {
       try {
         setLoading(true);
-        const response = await axios.get('http://192.168.140.82:5001/search-drug', {
+        const response = await axios.get('http://192.168.61.82:5001/search-drug', {
           params: { drugName },
         });
 
@@ -64,7 +64,7 @@ export default function Result() {
   useEffect(() => {
     const checkBookmark = async () => {
       try {
-        const response = await axios.post('http://192.168.140.82:5001/check-bookmark', {
+        const response = await axios.post('http://192.168.61.82:5001/check-bookmark', {
           username: username,
           drugName: drugName,
         });
@@ -86,7 +86,7 @@ const toggleLike = async () => {
 
   try {
       const endpoint = liked ? 'remove-bookmark' : 'add-bookmark';
-      const response = await axios.post(`http://192.168.140.82:5001/${endpoint}`, {
+      const response = await axios.post(`http://192.168.61.82:5001/${endpoint}`, {
           username :username,
           drugName : drug,
       });

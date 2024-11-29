@@ -1,4 +1,5 @@
 import React from 'react';
+import { View, Text, TouchableOpacity, ScrollView, Image, TextInput, ActivityIndicator} from 'react-native'
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { AppRegistry } from 'react-native';
@@ -21,6 +22,7 @@ const App = () => {
 
   const [isLoggedIn, setIsLoggedIn] = useState(null);
   const [username, setUsername] = useState('');
+  const [isLoading, setIsLoading] = useState(true);
 
   const checkLoginStatus = async () => {
     try {
@@ -28,12 +30,14 @@ const App = () => {
       const storedUsername = await AsyncStorage.getItem('username');
       if (loggedIn === 'true' && storedUsername) {
         setIsLoggedIn(true);
-        setUsername(storedUsername); // Save username in state
+        setUsername(storedUsername);
       } else {
         setIsLoggedIn(false);
       }
     } catch (error) {
       console.error('Failed to fetch login status:', error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -42,12 +46,31 @@ const App = () => {
   }, []);
 
 
-
+  if (isLoading) {
+    return (
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <ActivityIndicator size="large" color="#0000ff" />
+      </View>
+    );
+  }
 
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName={isLoggedIn ? 'Home' : 'Login'} screenOptions={{ headerShown: false }}>
-      <Stack.Screen name="Home" component={Home} />
+      <Stack.Navigator 
+      initialRouteName={isLoggedIn ? 'Home' : 'Login'} 
+      screenOptions={{ headerShown: false }}>
+
+{isLoggedIn && (
+        <Stack.Screen
+          name="Home"
+          component={Home}
+          initialParams={{ username }} // Pass username as a parameter
+        />
+      )}
+
+      {!isLoggedIn && (
+        <Stack.Screen name="Home" component={Home} />
+      )}
       <Stack.Screen name="Login" component={Login} />
       <Stack.Screen name="Register" component={Register} />
       <Stack.Screen name="Result" component={Result} />

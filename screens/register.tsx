@@ -18,7 +18,7 @@ export default function register() {
     }
   
     try {
-      const response = await axios.post('http://192.168.140.82:5001/register-user', {
+      const response = await axios.post('http://192.168.61.82:5001/register-user', {
         username: name,
         email,
         password

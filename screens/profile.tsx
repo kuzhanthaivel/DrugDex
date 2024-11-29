@@ -2,6 +2,7 @@ import { View, Text, TouchableOpacity, ScrollView, Image, TextInput} from 'react
 import React, { useState, useEffect } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 export default function Profile({ route}) {
   const navigation = useNavigation();
   const [password, setPassword] = useState('');
@@ -16,7 +17,7 @@ export default function Profile({ route}) {
     const fetchUserData = async () => {
       try {
         setLoading(true);
-        const response = await axios.get('http://192.168.140.82:5001/get-user', {
+        const response = await axios.get('http://192.168.61.82:5001/get-user', {
           params: { username },
         });
         const user = response.data.data;
@@ -95,7 +96,11 @@ export default function Profile({ route}) {
     );
   }
 
-  
+  const handleLogout = async () => {
+    await AsyncStorage.clear();
+    await AsyncStorage.setItem('isLoggedIn', 'false');
+    navigation.navigate('Login')
+  };
   
   
   return (
@@ -161,7 +166,7 @@ export default function Profile({ route}) {
 
  {/* Logout Button */}
  <View className="items-center mx-6 mt-6">
-        <TouchableOpacity
+        <TouchableOpacity onPress={handleLogout}
           className="items-center w-24 py-3 bg-red-500 rounded-lg "
         >
           <Text className="text-lg font-bold text-white">Logout</Text>
