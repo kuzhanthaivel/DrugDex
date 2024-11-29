@@ -17,7 +17,7 @@ export default function Profile({ route}) {
     const fetchUserData = async () => {
       try {
         setLoading(true);
-        const response = await axios.get('http://192.168.61.82:5001/get-user', {
+        const response = await axios.get('https://drug-dex-server.vercel.app/get-user', {
           params: { username },
         });
         const user = response.data.data;

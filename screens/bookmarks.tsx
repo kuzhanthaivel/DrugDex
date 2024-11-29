@@ -12,7 +12,7 @@ export default function Bookmarks({ route }) {
   useEffect(() => {
     const fetchBookmarks = async () => {
       try {
-        const response = await axios.get(`http://192.168.61.82:5001/show-bookmarks/${username}`);
+        const response = await axios.get(`https://drug-dex-server.vercel.app/show-bookmarks/${username}`);
         if (response.status === 200 && response.data.bookmarks) {
           setBookmarks(response.data.bookmarks);  
         } else {

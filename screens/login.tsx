@@ -13,7 +13,7 @@ export default function login() {
   
   const handleLogin = async () => {
     try {
-      const response = await axios.post('http://192.168.61.82:5001/login-user', {
+      const response = await axios.post('https://drug-dex-server.vercel.app/login-user', {
         username : username,
         password,
       });

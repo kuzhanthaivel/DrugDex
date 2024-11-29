@@ -10,7 +10,7 @@ export default function EditUsername({ route}) {
 
   const handleUsernameChange = async () => {
     try {
-      const response = await axios.put('http://192.168.61.82:5001/edit-username', {
+      const response = await axios.put('https://drug-dex-server.vercel.app/edit-username', {
         currentUsername: username,
         newUsername: newUsername,
       });

@@ -21,7 +21,7 @@ export default function EditPassword({ route }) {
     }
 
     try {
-      const response = await axios.put('http://192.168.61.82:5001/edit-password', {
+      const response = await axios.put('https://drug-dex-server.vercel.app/edit-password', {
         username,
         newPassword,
       });
