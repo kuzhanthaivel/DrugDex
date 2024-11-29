@@ -17,28 +17,10 @@ export default function Register() {
 
   const validatePassword = (password) => {
     const passwordRegex = /^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[!@#$%^&*])/; // At least one letter, one number, and one symbol
-    return passwordRegex.test(password);
+    return password.length >= 8 && passwordRegex.test(password);
   };
 
   const handleRegister = async () => {
-    if (!validateEmail(email)) {
-      Alert.alert('Invalid Email', 'Please enter a valid email address containing @.');
-      return;
-    }
-
-    if (!validatePassword(password)) {
-      Alert.alert(
-        'Weak Password',
-        'Password must contain at least one letter, one number, and one special character.'
-      );
-      return;
-    }
-
-    if (password !== retypePassword) {
-      Alert.alert('Passwords do not match!');
-      return;
-    }
-
     try {
       const response = await axios.post('https://drug-dex-server.vercel.app/register-user', {
         username: name,
@@ -76,7 +58,7 @@ export default function Register() {
       <Text className="mb-6 text-xl font-semibold text-gray-800">Sign Up</Text>
 
       {/* Name Input */}
-      <View className="mb-4">
+      <View className="mb-6">
         <TextInput
           className="w-full h-12 px-4 bg-white border border-gray-300 rounded-lg"
           placeholder="NAME"
@@ -94,6 +76,17 @@ export default function Register() {
           keyboardType="email-address"
           onChangeText={(text) => setEmail(text)}
         />
+        <Text
+          className={`pl-1 text-sm ${
+            validateEmail(email) ? 'text-green-500' : email.length > 0 ? 'text-red-500' : ''
+          }`}
+        >
+          {email.length === 0
+            ? ''
+            : validateEmail(email)
+            ? 'Email looks good!'
+            : 'Please enter a valid email address.'}
+        </Text>
       </View>
 
       {/* Password Input */}
@@ -105,6 +98,20 @@ export default function Register() {
           value={password}
           onChangeText={(text) => setPassword(text)}
         />
+       <Text
+          className={`pl-1 text-sm ${
+            validatePassword(password) ? 'text-green-500' : password.length > 0 ? 'text-red-500' : ''
+          }`}
+        >
+          {password.length === 0
+            ? ''
+            : validatePassword(password)
+            ? 'Strong password!'
+            : password.length < 8
+            ? 'Password must be at least 8 characters long.'
+            : 'Password must contain at least one letter, one number, and one special character.'}
+        </Text>
+
       </View>
 
       {/* Retype Password Input */}
@@ -116,6 +123,22 @@ export default function Register() {
           value={retypePassword}
           onChangeText={(text) => setRetypePassword(text)}
         />
+        
+        <Text
+          className={`pl-1 text-sm ${
+            password === retypePassword && retypePassword.length > 0
+              ? 'text-green-500'
+              : retypePassword.length > 0
+              ? 'text-red-500'
+              : ''
+          }`}
+        >
+          {retypePassword.length === 0
+            ? ''
+            : password === retypePassword
+            ? 'Passwords match!'
+            : 'Passwords do not match.'}
+        </Text>
       </View>
 
       {/* Create Account Button */}

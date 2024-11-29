@@ -8,6 +8,13 @@ export default function EditPassword({ route }) {
   const { username } = route.params;
   const [newPassword, setNewPassword] = useState('');
 
+
+  const validateNewPassword = (password) => {
+
+    const passwordRegex = /^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[!@#$%^&*])/;
+    return password.length >= 8 && passwordRegex.test(password);
+  };
+
   const handlePasswordChange = async () => {
     if (!newPassword) {
       Alert.alert('Validation Error', 'Please enter a new password.');
@@ -15,7 +22,7 @@ export default function EditPassword({ route }) {
     }
 
     // Password validation (e.g., minimum length)
-    if (newPassword.length < 4) {
+    if (newPassword.length < 8) {
       Alert.alert('Validation Error', 'Password must be at least 8 characters long.');
       return;
     }
@@ -54,6 +61,19 @@ export default function EditPassword({ route }) {
           value={newPassword}
           onChangeText={(text) => setNewPassword(text)}
         />
+
+        {/* Password Validation Feedback */}
+        <Text
+          className={`mt-2 text-sm ${
+            validateNewPassword(newPassword) ? 'text-green-500' : newPassword.length > 0 ? 'text-red-500' : ''
+          }`}
+        >
+          {newPassword.length === 0
+            ? ''
+            : validateNewPassword(newPassword)
+            ? 'Strong password!'
+            : 'Password must be at least 8 characters long and contain a letter, number, and special character.'}
+        </Text>
 
         {/* Change Password Button */}
         <TouchableOpacity
