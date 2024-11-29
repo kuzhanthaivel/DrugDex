@@ -1,42 +1,28 @@
 {
   "expo": {
-    "scheme": "acme",
-    "name": "Drugdex",
-    "slug": "Drugdex",
+    "name": "DrugDex",
+    "slug": "DrugDex",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/splash.png",
     "userInterfaceStyle": "light",
+    "newArchEnabled": true,
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "cover",
       "backgroundColor": "#ffffff"
     },
-    "platforms": ["ios", "android", "web"],
-    "assetBundlePatterns": [
-      "**/*"
-    ],
     "ios": {
       "supportsTablet": true
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/favicon.png",
-        "backgroundColor": "#ffffff",
-        "resizeMode": "cover"
-      },
-      "package": "com.example.Drugdex"
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#ffffff"
+      }
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    },
-    "extra": {
-      "eas": {
-        "projectId": "37f79a52-0a94-45dd-b716-bf889820558f"
-      }
-    },
-    "plugins": [
-      "expo-router"
-    ]
+    }
   }
 }
