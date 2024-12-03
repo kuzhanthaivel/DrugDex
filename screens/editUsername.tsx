@@ -27,7 +27,7 @@ export default function EditUsername({ route}) {
   };
 
   return (
-    <View className="flex-1 bg-gray-100 pt-14 ">
+    <View className="flex-1 pt-4 bg-gray-100 ">
       {/* Logo and Title */}
       <View className="flex-row items-center justify-center py-4">
         <Image

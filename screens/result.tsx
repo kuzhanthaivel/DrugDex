@@ -103,7 +103,7 @@ const toggleLike = async () => {
 
   if (loading) {
     return (
-      <View className="flex-1 pt-14" >
+      <View className="flex-1 pt-4" >
           <View className="flex-row items-center px-5 mx-3 my-4 bg-white rounded-lg shadow-md h-14">
         <TouchableOpacity
           onPress={() =>
@@ -150,7 +150,7 @@ const toggleLike = async () => {
 
   if (error) {
     return (
-      <View className="flex-1 pt-14" >
+      <View className="flex-1 pt-4" >
       <View className="flex-row items-center px-5 mx-3 my-4 bg-white rounded-lg shadow-md h-14">
         <TouchableOpacity
           onPress={() =>
@@ -198,7 +198,7 @@ const toggleLike = async () => {
   }
 
   return (
-    <View className="flex-1 bg-gray-100 pt-14">
+    <View className="flex-1 pt-4 bg-gray-100">
       <View className="flex-row items-center px-5 mx-3 my-4 bg-white rounded-lg shadow-md h-14">
         <TouchableOpacity
           onPress={() =>

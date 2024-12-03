@@ -34,7 +34,7 @@ export default function login() {
   };
 
   return (
-    <ScrollView className="flex-1 px-10 pt-10 bg-gray-100">
+    <ScrollView className="flex-1 px-10 pt-4 bg-gray-100">
       {/* Header */}
       <View className="flex-row items-center justify-center mt-10 mb-8">
         <Image

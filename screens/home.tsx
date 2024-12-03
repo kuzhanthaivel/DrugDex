@@ -15,7 +15,7 @@ const HomeScreen = ({ route}) => {
   };
   
   return (
-    <View className="flex-1 bg-gray-100 pt-14">
+    <View className="flex-1 pt-4 bg-gray-100">
       {/* Header */}
       <View className="flex-row items-center justify-center py-4">
         <Image source={require('../assets/icon.png')} className="" />
@@ -56,7 +56,7 @@ const HomeScreen = ({ route}) => {
       </Text>
 
       {/* Footer Navigation */}
-      <View className="absolute bottom-0 flex-row items-center justify-around w-full h-24 py-2 bg-gray-100">
+      <View className="absolute bottom-0 flex-row items-center justify-around w-full h-24 pr-6 mb-2 scale-90 bg-gray-200 rounded-3xl">
         <TouchableOpacity
           onPress={() => navigation.navigate('Bookmarks', { username })}
           className="items-center gap-2"
