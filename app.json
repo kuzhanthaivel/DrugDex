@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "MyMoneyMate",
-    "slug": "MyMoneyMate",
+    "name": "DrugDex",
+    "slug": "DrugDex",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/favicon.png",
@@ -20,14 +20,14 @@
         "foregroundImage": "./assets/favicon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.kuzhanthaivelu.MyMoneyMate"
+      "package": "com.kuzhanthaivelu.DrugDex"
     },
     "web": {
       "favicon": "./assets/favicon.png"
     },
     "extra": {
       "eas": {
-        "projectId": "81ccf00d-ad60-47d4-9239-66b46587a6b7"
+        "projectId": "15bdf914-a8d5-4cc8-bc52-f5fc0b8650a3"
       }
     }
   }
